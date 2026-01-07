@@ -1,0 +1,128 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-container">
+  <h1 class="page-title">
+    <mat-icon>dashboard</mat-icon>
+    Tableau de bord
+  </h1>
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid">
+    <mat-card class="stat-card card-purple">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>book</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>{{ stats.totalCours }}</h3>
+          <p>Cours</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card card-blue">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>assignment</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>{{ stats.totalProjets }}</h3>
+          <p>Projets</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card card-green">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>cloud_upload</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>{{ stats.totalSoumissions }}</h3>
+          <p>Soumissions</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card card-orange">
+      <div class="stat-content">
+        <div class="stat-icon">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>{{ stats.totalUtilisateurs }}</h3>
+          <p>Utilisateurs</p>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="activity-grid">
+    <mat-card class="activity-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>schedule</mat-icon>
+          Projets récents
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-list" *ngIf="!loading; else loadingTemplate">
+          <div *ngFor="let projet of recentProjects" class="activity-item">
+            <div class="activity-icon">
+              <mat-icon>folder</mat-icon>
+            </div>
+            <div class="activity-details">
+              <h4>{{ projet.titre }}</h4>
+              <p>{{ projet.description }}</p>
+              <span class="activity-date">
+                <mat-icon>event</mat-icon>
+                {{ projet.dateLimite | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="activity-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>cloud_done</mat-icon>
+          Soumissions récentes
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-list" *ngIf="!loading; else loadingTemplate">
+          <div *ngFor="let soumission of recentSubmissions" class="activity-item">
+            <div class="activity-icon">
+              <mat-icon>description</mat-icon>
+            </div>
+            <div class="activity-details">
+              <h4>Soumission #{{ soumission.id }}</h4>
+              <p>{{ soumission.fichierUrl }}</p>
+              <span class="activity-date">
+                <mat-icon>event</mat-icon>
+                {{ soumission.dateSoumission | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+            </div>
+            <div class="activity-status">
+              <mat-chip *ngIf="soumission.note" color="accent" [highlighted]="true">
+                {{ soumission.note }}/20
+              </mat-chip>
+              <mat-chip *ngIf="!soumission.note" color="warn">
+                Non notée
+              </mat-chip>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Chargement...</p>
+    </div>
+  </ng-template>
+</div>
